@@ -1,0 +1,50 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout.jsx'
+import { AuthProvider, useAuth } from './context/AuthContext.jsx'
+import Admin from './pages/Admin.jsx'
+import Collections from './pages/Collections.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Login from './pages/Login.jsx'
+import NewTicket from './pages/NewTicket.jsx'
+import Tickets from './pages/Tickets.jsx'
+
+function ProtectedRoute({ children, roles }) {
+    const { user } = useAuth()
+    if (!user) return <Navigate to="/login" replace />
+    if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />
+    return children
+}
+
+export default function App() {
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+                    <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="tickets" element={<Tickets />} />
+                        <Route path="tickets/new" element={<NewTicket />} />
+                        <Route path="collections" element={
+                            <ProtectedRoute roles={['admin', 'zone', 'woreda']}>
+                                <Collections />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="admin" element={
+                            <ProtectedRoute roles={['admin', 'zone']}>
+                                <Admin />
+                            </ProtectedRoute>
+                        } />
+                    </Route>
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
+    )
+}
+
+function PublicRoute({ children }) {
+    const { user } = useAuth()
+    if (user) return <Navigate to="/" replace />
+    return children
+}
