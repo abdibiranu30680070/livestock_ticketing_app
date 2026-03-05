@@ -1,70 +1,14 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const authController = require('../controllers/authController');
+const authenticate = require('../middleware/auth');
 
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password)
-        return res.status(400).json({ error: 'Email and password required' });
+router.post('/login', authController.login);
 
-    try {
-        const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) return res.status(401).json({ error: 'Invalid credentials' });
-
-        const valid = await bcrypt.compare(password, user.password);
-        if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
-
-        const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role, name: user.name },
-            process.env.JWT_SECRET,
-            { expiresIn: '12h' }
-        );
-
-        res.json({
-            token,
-            user: { id: user.id, name: user.name, email: user.email, role: user.role }
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
-// POST /api/auth/register  (admin only in production)
-router.post('/register', async (req, res) => {
-    const { name, email, password, role, zoneId, cityId, woredaId } = req.body;
-    if (!name || !email || !password)
-        return res.status(400).json({ error: 'Name, email, and password required' });
-
-    try {
-        const hashed = await bcrypt.hash(password, 10);
-        const user = await prisma.user.create({
-            data: { name, email, password: hashed, role: role || 'ticketer', zoneId, cityId, woredaId }
-        });
-        res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role });
-    } catch (err) {
-        if (err.code === 'P2002') return res.status(409).json({ error: 'Email already exists' });
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
-    }
-});
+// POST /api/auth/register
+router.post('/register', authController.register);
 
 // GET /api/auth/me
-const authenticate = require('../middleware/auth');
-router.get('/me', authenticate, async (req, res) => {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: req.user.id },
-            select: { id: true, name: true, email: true, role: true, zoneId: true, cityId: true, woredaId: true }
-        });
-        res.json(user);
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
+router.get('/me', authenticate, authController.getMe);
 
 module.exports = router;

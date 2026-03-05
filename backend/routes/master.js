@@ -1,92 +1,25 @@
 const router = require('express').Router();
-const { PrismaClient } = require('@prisma/client');
+const masterController = require('../controllers/masterController');
 const authenticate = require('../middleware/auth');
 
-const prisma = new PrismaClient();
-
 // GET /api/master/zones
-router.get('/zones', authenticate, async (req, res) => {
-    const zones = await prisma.zone.findMany({ orderBy: { name: 'asc' } });
-    res.json(zones);
-});
+router.get('/zones', authenticate, masterController.getAllZones);
 
 // GET /api/master/cities
-router.get('/cities', authenticate, async (req, res) => {
-    const { zoneId } = req.query;
-    const cities = await prisma.city.findMany({
-        where: zoneId ? { zoneId: parseInt(zoneId) } : {},
-        include: { zone: { select: { name: true } } },
-        orderBy: { name: 'asc' }
-    });
-    res.json(cities);
-});
+router.get('/cities', authenticate, masterController.getAllCities);
 
 // GET /api/master/woredas
-router.get('/woredas', authenticate, async (req, res) => {
-    const { cityId } = req.query;
-    const woredas = await prisma.woreda.findMany({
-        where: cityId ? { cityId: parseInt(cityId) } : {},
-        include: { city: { select: { name: true } } },
-        orderBy: { name: 'asc' }
-    });
-    res.json(woredas);
-});
+router.get('/woredas', authenticate, masterController.getAllWoredas);
 
 // GET /api/master/animal-types
-router.get('/animal-types', authenticate, async (req, res) => {
-    const types = await prisma.animalType.findMany({ orderBy: { name: 'asc' } });
-    res.json(types);
-});
+router.get('/animal-types', authenticate, masterController.getAllAnimalTypes);
 
-// CRUD for Animal Types (admin)
-router.post('/animal-types', authenticate, async (req, res) => {
-    if (!['admin', 'zone'].includes(req.user.role))
-        return res.status(403).json({ error: 'Insufficient permissions' });
-    const { name, taxAmount } = req.body;
-    if (!name || taxAmount === undefined)
-        return res.status(400).json({ error: 'Name and taxAmount are required' });
-    try {
-        const at = await prisma.animalType.create({ data: { name, taxAmount: parseFloat(taxAmount) } });
-        res.status(201).json(at);
-    } catch (err) {
-        if (err.code === 'P2002') return res.status(409).json({ error: 'Animal type already exists' });
-        res.status(500).json({ error: 'Server error' });
-    }
-});
+// CRUD for Animal Types (admin/zone)
+router.post('/animal-types', authenticate, masterController.createAnimalType);
+router.put('/animal-types/:id', authenticate, masterController.updateAnimalType);
+router.delete('/animal-types/:id', authenticate, masterController.deleteAnimalType);
 
-router.put('/animal-types/:id', authenticate, async (req, res) => {
-    if (!['admin', 'zone'].includes(req.user.role))
-        return res.status(403).json({ error: 'Insufficient permissions' });
-    const { name, taxAmount } = req.body;
-    try {
-        const at = await prisma.animalType.update({
-            where: { id: parseInt(req.params.id) },
-            data: { name, taxAmount: parseFloat(taxAmount) }
-        });
-        res.json(at);
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
-router.delete('/animal-types/:id', authenticate, async (req, res) => {
-    if (req.user.role !== 'admin')
-        return res.status(403).json({ error: 'Admin access required' });
-    try {
-        await prisma.animalType.delete({ where: { id: parseInt(req.params.id) } });
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
-// GET /api/master/users  (for dropdowns)
-router.get('/users', authenticate, async (req, res) => {
-    const users = await prisma.user.findMany({
-        select: { id: true, name: true, role: true, woredaId: true },
-        orderBy: { name: 'asc' }
-    });
-    res.json(users);
-});
+// GET /api/master/users (for dropdowns)
+router.get('/users', authenticate, masterController.getAllUsers);
 
 module.exports = router;
