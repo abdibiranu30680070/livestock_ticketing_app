@@ -22,6 +22,7 @@ app.use('/api/master', masterRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+app.get('/', (req, res) => res.json({ message: 'Livestock Ticketing API is running' }));
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 const PORT = process.env.PORT || 5000;
