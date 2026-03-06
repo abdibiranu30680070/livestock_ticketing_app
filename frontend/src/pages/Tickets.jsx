@@ -147,7 +147,14 @@ export default function Tickets() {
                                                 {t.state === 'draft' && (
                                                     <button className="btn btn-success btn-sm" onClick={() => handleConfirm(t.id)}>✓ Confirm</button>
                                                 )}
-                                                <button className="btn btn-outline btn-sm" onClick={() => startPrint(t)}>🖨️ Print</button>
+                                                <button
+                                                    className="btn btn-outline btn-sm"
+                                                    onClick={() => startPrint(t)}
+                                                    disabled={t.state === 'printed'}
+                                                    title={t.state === 'printed' ? 'Already Printed' : 'Print Receipt'}
+                                                >
+                                                    {t.state === 'printed' ? '✅ Printed' : '🖨️ Print'}
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

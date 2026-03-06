@@ -86,6 +86,12 @@ const createTicket = async (userId, data) => {
 };
 
 const confirmTicket = async (id) => {
+    const existing = await prisma.ticket.findUnique({ where: { id: parseInt(id) } });
+    if (!existing) throw { status: 404, message: 'Ticket not found' };
+    if (existing.state === 'printed') {
+        throw { status: 400, message: 'Ticket has already been printed/confirmed' };
+    }
+
     const ticket = await prisma.ticket.update({
         where: { id: parseInt(id) },
         data: { state: 'printed' },
