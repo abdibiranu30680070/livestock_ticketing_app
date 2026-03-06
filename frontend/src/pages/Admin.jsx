@@ -4,7 +4,7 @@ import OdaaIcon from '../components/OdaaIcon.jsx'
 
 const fmt = n => Number(n || 0).toLocaleString('en', { minimumFractionDigits: 2 })
 
-function AnimalTypesTab() {
+function AnimalTypesTab({ isMobile }) {
     const [types, setTypes] = useState([])
     const [form, setForm] = useState({ name: '', taxAmount: '' })
     const [editing, setEditing] = useState(null)
@@ -50,7 +50,12 @@ function AnimalTypesTab() {
     }
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 24, alignItems: 'start' }}>
+        <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr',
+            gap: 20,
+            alignItems: 'start'
+        }}>
             <div className="card">
                 <div className="card-header"><span className="card-title">{editing ? '✏️ Edit' : '➕ Add'} Animal Type</span></div>
                 <div className="card-body">
@@ -104,7 +109,7 @@ function AnimalTypesTab() {
     )
 }
 
-function UsersTab() {
+function UsersTab({ isMobile }) {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const [form, setForm] = useState({ name: '', email: '', password: '', role: 'ticketer', woredaId: '' })
@@ -139,7 +144,12 @@ function UsersTab() {
     const roleColors = { admin: 'badge-red', zone: 'badge-red', woreda: 'badge-green', ticketer: 'badge-gray' }
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 24, alignItems: 'start' }}>
+        <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr',
+            gap: 20,
+            alignItems: 'start'
+        }}>
             <div className="card">
                 <div className="card-header"><span className="card-title">➕ Add User</span></div>
                 <div className="card-body">
@@ -208,35 +218,53 @@ function UsersTab() {
 
 export default function Admin() {
     const [tab, setTab] = useState('animals')
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const tabBtnStyle = (t) => ({
-        padding: '10px 20px',
+        padding: isMobile ? '8px 12px' : '10px 20px',
         borderRadius: 8,
         border: 'none',
         cursor: 'pointer',
         fontWeight: 600,
-        fontSize: 14,
+        fontSize: isMobile ? 12 : 14,
         background: tab === t ? '#1f2937' : 'transparent',
         color: tab === t ? 'white' : '#6b7280',
         transition: 'all 0.2s',
+        whiteSpace: 'nowrap'
     })
 
     return (
-        <div>
+        <div style={{ paddingBottom: 40 }}>
             <div style={{ marginBottom: 24 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>Administration</h2>
-                <p style={{ color: '#6b7280', fontSize: 14 }}>Manage animal types, users, and system configuration</p>
+                <h2 style={{ fontSize: isMobile ? 20 : 24, fontWeight: 800, marginBottom: 4 }}>Administration</h2>
+                <p style={{ color: '#6b7280', fontSize: isMobile ? 12 : 14 }}>Manage animal types, users, and system config</p>
             </div>
 
-            <div style={{ background: 'white', borderRadius: 10, padding: 6, display: 'inline-flex', gap: 4, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', marginBottom: 24 }}>
+            <div style={{
+                background: 'white',
+                borderRadius: 10,
+                padding: 6,
+                display: 'flex',
+                gap: 4,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+                marginBottom: 24,
+                width: isMobile ? '100%' : 'auto',
+                overflowX: 'auto'
+            }}>
                 <button style={tabBtnStyle('animals')} onClick={() => setTab('animals')}>
                     <OdaaIcon style={{ marginRight: 6, verticalAlign: 'middle' }} /> Animal Types
                 </button>
                 <button style={tabBtnStyle('users')} onClick={() => setTab('users')}>👥 Users</button>
             </div>
 
-            {tab === 'animals' && <AnimalTypesTab />}
-            {tab === 'users' && <UsersTab />}
+            {tab === 'animals' && <AnimalTypesTab isMobile={isMobile} />}
+            {tab === 'users' && <UsersTab isMobile={isMobile} />}
         </div>
     )
 }
