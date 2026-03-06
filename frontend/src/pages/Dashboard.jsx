@@ -71,21 +71,40 @@ export default function Dashboard() {
         loadStats(f)
     }
 
-    const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    const pieOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+            y: { ticks: { font: { size: 10 } } }
+        }
+    }
+    const pieOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: isMobile ? 'bottom' : 'right', labels: { boxWidth: 12, font: { size: 11 } } } }
+    }
 
     return (
-        <div>
+        <div className="dashboard-container" style={{ padding: isMobile ? '0' : 'inherit' }}>
             {/* Header */}
-            <div className="dash-header" style={{ marginBottom: 24 }}>
+            <div className="dash-header" style={{ marginBottom: 20, padding: isMobile ? '20px' : '32px' }}>
                 <div className="dash-header-text">
-                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <OdaaIcon style={{ width: '32px', height: '32px', color: 'var(--forest-light)' }} />
-                        Livestock TAX Collection Dashboard
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: isMobile ? '18px' : '24px' }}>
+                        <OdaaIcon style={{ width: isMobile ? '24px' : '32px', height: isMobile ? '24px' : '32px', color: 'var(--forest-light)' }} />
+                        Livestock TAX Dashboard
                     </h1>
-                    <p>Official Real-time Monitoring Interface · Arsi Liixa Zone</p>
+                    <p style={{ fontSize: isMobile ? '12px' : '14px' }}>Official Real-time Monitoring · Arsi Liixa</p>
                 </div>
-                <button className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)' }} onClick={() => loadStats()}>
+                <button className="btn btn-outline" style={{ display: isMobile ? 'none' : 'flex', color: 'white', borderColor: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)' }} onClick={() => loadStats()}>
                     🔄 Refresh
                 </button>
             </div>
@@ -121,33 +140,37 @@ export default function Dashboard() {
             </div>
 
             {/* Summary Cards */}
-            <div className="summary-grid">
-                <div className="summary-card red">
-                    <div className="summary-icon red">🐄</div>
+            <div className="summary-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '12px'
+            }}>
+                <div className="summary-card red" style={{ padding: '12px' }}>
+                    <div className="summary-icon red" style={{ width: 40, height: 40, fontSize: 18 }}>🐄</div>
                     <div>
-                        <div className="summary-label">Cattle Today</div>
-                        <div className="summary-value">{(stats?.summary?.cattle || 0).toLocaleString()}</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Cattle Today</div>
+                        <div className="summary-value" style={{ fontSize: 20 }}>{(stats?.summary?.cattle || 0).toLocaleString()}</div>
                     </div>
                 </div>
-                <div className="summary-card green">
-                    <div className="summary-icon green">💵</div>
+                <div className="summary-card green" style={{ padding: '12px' }}>
+                    <div className="summary-icon green" style={{ width: 40, height: 40, fontSize: 18 }}>💵</div>
                     <div>
-                        <div className="summary-label">Tax Today</div>
-                        <div className="summary-value">{fmt(stats?.summary?.tax)} <span className="unit">ETB</span></div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Tax Today</div>
+                        <div className="summary-value" style={{ fontSize: 20 }}>{fmt(stats?.summary?.tax)} <span className="unit">ETB</span></div>
                     </div>
                 </div>
-                <div className="summary-card dark">
-                    <div className="summary-icon dark">🎫</div>
+                <div className="summary-card dark" style={{ padding: '12px' }}>
+                    <div className="summary-icon dark" style={{ width: 40, height: 40, fontSize: 18 }}>🎫</div>
                     <div>
-                        <div className="summary-label">Transactions</div>
-                        <div className="summary-value">{stats?.summary?.tx || 0}</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Transactions</div>
+                        <div className="summary-value" style={{ fontSize: 20 }}>{stats?.summary?.tx || 0}</div>
                     </div>
                 </div>
-                <div className="summary-card orange">
-                    <div className="summary-icon orange">👥</div>
+                <div className="summary-card orange" style={{ padding: '12px' }}>
+                    <div className="summary-icon orange" style={{ width: 40, height: 40, fontSize: 18 }}>👥</div>
                     <div>
-                        <div className="summary-label">Active Staff</div>
-                        <div className="summary-value">{stats?.summary?.collectors || 0}</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Active Staff</div>
+                        <div className="summary-value" style={{ fontSize: 20 }}>{stats?.summary?.collectors || 0}</div>
                     </div>
                 </div>
             </div>
