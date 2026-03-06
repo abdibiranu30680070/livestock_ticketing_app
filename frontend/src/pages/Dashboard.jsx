@@ -100,7 +100,7 @@ export default function Dashboard() {
                 <div className="dash-header-text">
                     <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: isMobile ? '18px' : '24px' }}>
                         <OdaaIcon style={{ width: isMobile ? '24px' : '32px', height: isMobile ? '24px' : '32px', color: 'var(--forest-light)' }} />
-                        Gabaasa Gibira Loonii
+                        Gabaasa Gibira Hoori
                     </h1>
                     <p style={{ fontSize: isMobile ? '12px' : '14px' }}>Hordoffii Yeroo Dhugaa · Godina Arsi Liixa</p>
                 </div>
@@ -148,7 +148,7 @@ export default function Dashboard() {
                 <div className="summary-card red" style={{ padding: '12px' }}>
                     <div className="summary-icon red" style={{ width: 40, height: 40, fontSize: 18 }}>🐄</div>
                     <div>
-                        <div className="summary-label" style={{ fontSize: 11 }}>Loon Har'aa</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Hoori Har'aa</div>
                         <div className="summary-value" style={{ fontSize: 20 }}>{(stats?.summary?.cattle || 0).toLocaleString()}</div>
                     </div>
                 </div>

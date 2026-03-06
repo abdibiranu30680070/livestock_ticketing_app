@@ -4,48 +4,48 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('Seeding database...');
+    console.log('Deetaa guutaa jira...');
 
     // Zone
     const zone = await prisma.zone.upsert({
-        where: { name: 'Arsi Liixa Zone' },
+        where: { name: 'Godina Arsi Liixa' },
         update: {},
-        create: { name: 'Arsi Liixa Zone', code: 'ALZ' }
+        create: { name: 'Godina Arsi Liixa', code: 'ALZ' }
     });
 
     // Cities
     const city1 = await prisma.city.upsert({
         where: { id: 1 },
         update: {},
-        create: { name: 'Assela', zoneId: zone.id }
+        create: { name: 'Asallaa', zoneId: zone.id }
     });
     const city2 = await prisma.city.upsert({
         where: { id: 2 },
         update: {},
-        create: { name: 'Bekoji', zoneId: zone.id }
+        create: { name: 'Baqojjii', zoneId: zone.id }
     });
 
     // Woredas
     const woreda1 = await prisma.woreda.upsert({
         where: { id: 1 },
         update: {},
-        create: { name: 'Assela Town', cityId: city1.id }
+        create: { name: 'Magaalaa Asallaa', cityId: city1.id }
     });
     const woreda2 = await prisma.woreda.upsert({
         where: { id: 2 },
         update: {},
-        create: { name: 'Bekoji Town', cityId: city2.id }
+        create: { name: 'Magaalaa Baqojjii', cityId: city2.id }
     });
 
     // Animal Types
     const animals = [
-        { name: 'Cattle', taxAmount: 50 },
-        { name: 'Sheep', taxAmount: 20 },
-        { name: 'Goat', taxAmount: 15 },
-        { name: 'Camel', taxAmount: 100 },
-        { name: 'Horse', taxAmount: 60 },
-        { name: 'Donkey', taxAmount: 10 },
-        { name: 'Mule', taxAmount: 40 },
+        { name: 'Loon', taxAmount: 50 },
+        { name: 'Hoolaa', taxAmount: 20 },
+        { name: 'Re\'ee', taxAmount: 15 },
+        { name: 'Gaala', taxAmount: 100 },
+        { name: 'Farda', taxAmount: 60 },
+        { name: 'Harree', taxAmount: 10 },
+        { name: 'Gaangee', taxAmount: 40 },
     ];
     for (const a of animals) {
         await prisma.animalType.upsert({
@@ -61,7 +61,7 @@ async function main() {
         where: { email: 'admin@livestock.et' },
         update: {},
         create: {
-            name: 'System Admin',
+            name: 'Bulchiinsa Sirnaa',
             email: 'admin@livestock.et',
             password: adminPass,
             role: 'admin',
@@ -75,7 +75,7 @@ async function main() {
         where: { email: 'zone@livestock.et' },
         update: {},
         create: {
-            name: 'Zone Administrator',
+            name: 'Bulchiinsa Godinaa',
             email: 'zone@livestock.et',
             password: zonePass,
             role: 'zone',
@@ -90,7 +90,7 @@ async function main() {
         where: { email: 'woreda@livestock.et' },
         update: {},
         create: {
-            name: 'Woreda Admin Assela',
+            name: 'Bulchiinsa Aanaa Asallaa',
             email: 'woreda@livestock.et',
             password: woredaPass,
             role: 'woreda',
@@ -106,7 +106,7 @@ async function main() {
         where: { email: 'tick1@livestock.et' },
         update: {},
         create: {
-            name: 'Abdi Ticketer',
+            name: 'Abdi Sassaabaa',
             email: 'tick1@livestock.et',
             password: tick1Pass,
             role: 'ticketer',
@@ -121,7 +121,7 @@ async function main() {
         where: { email: 'tick2@livestock.et' },
         update: {},
         create: {
-            name: 'Chaltu Ticketer',
+            name: 'Caaltu Sassaabaa',
             email: 'tick2@livestock.et',
             password: tick2Pass,
             role: 'ticketer',
@@ -131,8 +131,8 @@ async function main() {
         }
     });
 
-    console.log('Seed complete!');
-    console.log('\nDemo credentials:');
+    console.log('Deetaan guutameera!');
+    console.log('\nGalmee demoo:');
     console.log('  admin@livestock.et / admin123');
     console.log('  zone@livestock.et  / zone123');
     console.log('  woreda@livestock.et / woreda123');
