@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
+import { toast } from 'react-hot-toast'
 import api from '../api.js'
 import OdaaIcon from '../components/OdaaIcon.jsx'
 
@@ -37,7 +38,6 @@ export default function NewTicket() {
     const [form, setForm] = useState({ animalTypeId: '', quantity: 1, customerName: '' })
     const [preview, setPreview] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
     const [createdTicket, setCreatedTicket] = useState(null)
     const printRef = useRef()
 
@@ -61,13 +61,13 @@ export default function NewTicket() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setError('')
         setLoading(true)
         try {
             const res = await api.post('/tickets', form)
             setCreatedTicket(res.data)
+            toast.success('Nagaheen Qophaa\'eera')
         } catch (err) {
-            setError(err.response?.data?.error || 'Failed to create ticket')
+            toast.error(err.response?.data?.error || 'Failed to create ticket')
         } finally {
             setLoading(false)
         }
@@ -80,7 +80,7 @@ export default function NewTicket() {
             await api.patch(`/tickets/${createdTicket.id}/confirm`)
             handlePrint()
         } catch (err) {
-            setError('Failed to confirm ticket')
+            toast.error('Failed to confirm ticket')
         } finally {
             setLoading(false)
         }
@@ -105,8 +105,6 @@ export default function NewTicket() {
 
             <div className="card" style={{ border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
                 <div className="card-body" style={{ padding: '24px 20px' }}>
-                    {error && <div style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 8, padding: '12px 16px', marginBottom: 20, fontSize: 14 }}>⚠️ {error}</div>}
-
                     {!createdTicket ? (
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">

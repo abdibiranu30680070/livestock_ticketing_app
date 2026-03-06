@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import Layout from './components/Layout.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import Admin from './pages/Admin.jsx'
@@ -18,6 +19,7 @@ function ProtectedRoute({ children, roles }) {
 export default function App() {
     return (
         <AuthProvider>
+            <Toaster position="top-right" />
             <BrowserRouter>
                 <Routes>
                     <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />

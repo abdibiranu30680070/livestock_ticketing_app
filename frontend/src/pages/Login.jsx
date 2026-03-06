@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import OdaaIcon from '../components/OdaaIcon.jsx'
 
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { login } = useAuth()
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setError('')
         setLoading(true)
         try {
             await login(email, password)
             navigate('/')
+            toast.success('Baga Nageeyaan Dhuftan!')
         } catch (err) {
-            setError(err.response?.data?.error || 'Invalid credentials')
+            toast.error(err.response?.data?.error || 'Invalid credentials')
         } finally {
             setLoading(false)
         }
@@ -55,8 +55,6 @@ export default function Login() {
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#1f2937', marginBottom: 4 }}>Godina Arsi Liixa</h1>
                     <p style={{ color: '#6b7280', fontSize: 14 }}>Sirna Sassaabbii Gibira Loonii</p>
                 </div>
-
-                {error && <div style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 8, padding: '12px 16px', marginBottom: 24, fontSize: 13 }}>⚠️ {error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group" style={{ marginBottom: 20 }}>

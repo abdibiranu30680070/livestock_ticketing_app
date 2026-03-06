@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import api from '../api.js'
 
 const fmt = n => Number(n || 0).toLocaleString('en', { minimumFractionDigits: 2 })
@@ -10,8 +11,6 @@ export default function Collections() {
     const [loading, setLoading] = useState(true)
     const [form, setForm] = useState({ ticketerId: '', amount: '' })
     const [formLoading, setFormLoading] = useState(false)
-    const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
 
     const loadData = async () => {
         setLoading(true)
@@ -30,16 +29,14 @@ export default function Collections() {
 
     const handleRecord = async (e) => {
         e.preventDefault()
-        setError('')
-        setSuccess('')
         setFormLoading(true)
         try {
             await api.post('/collections', form)
             setForm({ ticketerId: '', amount: '' })
-            setSuccess('Sassaabbii gibiraa sirriitti galmaa\'eera!')
+            toast.success('Sassaabbii gibiraa sirriitti galmaa\'eera!')
             loadData()
         } catch (err) {
-            setError(err.response?.data?.error || 'Sassaabbii galmeessuun hin danda\'amne')
+            toast.error(err.response?.data?.error || 'Sassaabbii galmeessuun hin danda\'amne')
         } finally { setFormLoading(false) }
     }
 
@@ -54,8 +51,6 @@ export default function Collections() {
             <div className="card" style={{ marginBottom: 24, maxWidth: 520 }}>
                 <div className="card-header"><span className="card-title">💰 Sassaabbii Galmeessi</span></div>
                 <div className="card-body">
-                    {error && <div style={{ background: '#fef2f2', color: '#dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>⚠️ {error}</div>}
-                    {success && <div style={{ background: '#f0fdf4', color: '#16a34a', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>✅ {success}</div>}
                     <form onSubmit={handleRecord}>
                         <div className="form-group">
                             <label className="form-label">Sassaabaa Gibiraa *</label>

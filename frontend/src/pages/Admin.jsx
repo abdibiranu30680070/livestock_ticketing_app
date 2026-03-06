@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import api from '../api.js'
 import OdaaIcon from '../components/OdaaIcon.jsx'
 
@@ -10,7 +11,7 @@ function AnimalTypesTab({ isMobile }) {
     const [editing, setEditing] = useState(null)
     const [loading, setLoading] = useState(true)
     const [submitting, setSubmitting] = useState(false)
-    const [msg, setMsg] = useState({ type: '', text: '' })
+    const [deletingType, setDeletingType] = useState(null)
 
     const load = async () => {
         setLoading(true)
@@ -24,29 +25,35 @@ function AnimalTypesTab({ isMobile }) {
     const submit = async (e) => {
         e.preventDefault()
         setSubmitting(true)
-        setMsg({ type: '', text: '' })
         try {
             if (editing) {
                 await api.put(`/master/animal-types/${editing.id}`, form)
-                setMsg({ type: 'success', text: 'Sirriitti haaromfameera!' })
+                toast.success('Sirriitti haaromfameera!')
             } else {
                 await api.post('/master/animal-types', form)
-                setMsg({ type: 'success', text: 'Gosti beeyladaa dabalameera!' })
+                toast.success('Gosti beeyladaa dabalameera!')
             }
             setForm({ name: '', taxAmount: '' })
             setEditing(null)
             load()
         } catch (err) {
-            setMsg({ type: 'error', text: err.response?.data?.error || 'Hin danda\'amne' })
+            toast.error(err.response?.data?.error || 'Hin danda\'amne')
         } finally { setSubmitting(false) }
     }
 
     const startEdit = (t) => { setEditing(t); setForm({ name: t.name, taxAmount: t.taxAmount }) }
 
-    const del = async (id) => {
-        if (!confirm('Gosa beeyladaa kana haquu barbaadduu?')) return
-        await api.delete(`/master/animal-types/${id}`)
-        load()
+    const confirmDelete = async () => {
+        if (!deletingType) return
+        try {
+            await api.delete(`/master/animal-types/${deletingType.id}`)
+            toast.success('Gosti beeyladaa haqameera!')
+            load()
+        } catch (err) {
+            toast.error(err.response?.data?.error || 'Haqamuun hin danda\'amne')
+        } finally {
+            setDeletingType(null)
+        }
     }
 
     return (
@@ -56,14 +63,28 @@ function AnimalTypesTab({ isMobile }) {
             gap: 20,
             alignItems: 'start'
         }}>
+            {deletingType && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+                }}>
+                    <div className="card" style={{ width: 400, maxWidth: '100%', margin: 0 }}>
+                        <div className="card-header"><span className="card-title">⚠️ Mirkaneessi Haquu</span></div>
+                        <div className="card-body">
+                            <p style={{ marginBottom: 20 }}>Gosa beeyladaa <b>{deletingType.name}</b> haquu barbaadduu? Gochi kun deebiyee hin sirreeffamu.</p>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                                <button className="btn btn-outline" onClick={() => setDeletingType(null)}>Dhiisi</button>
+                                <button className="btn btn-primary" style={{ background: '#dc2626', borderColor: '#dc2626', color: 'white' }} onClick={confirmDelete}>Haqi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="card">
                 <div className="card-header"><span className="card-title">{editing ? '✏️ Sirreessi' : '➕ Dabali'} Gosa Beeyladaa</span></div>
                 <div className="card-body">
-                    {msg.text && (
-                        <div style={{ background: msg.type === 'success' ? '#f0fdf4' : '#fef2f2', color: msg.type === 'success' ? '#16a34a' : '#dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>
-                            {msg.type === 'success' ? '✅' : '⚠️'} {msg.text}
-                        </div>
-                    )}
                     <form onSubmit={submit}>
                         <div className="form-group">
                             <label className="form-label">Maqaa *</label>
@@ -95,7 +116,7 @@ function AnimalTypesTab({ isMobile }) {
                                         <td>
                                             <div style={{ display: 'flex', gap: 6 }}>
                                                 <button className="btn btn-outline btn-sm" onClick={() => startEdit(t)}>✏️ Edit</button>
-                                                <button className="btn btn-sm" style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }} onClick={() => del(t.id)}>🗑️</button>
+                                                <button className="btn btn-sm" style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }} onClick={() => setDeletingType(t)}>🗑️</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -115,7 +136,6 @@ function UsersTab({ isMobile }) {
     const [form, setForm] = useState({ name: '', email: '', password: '', role: 'ticketer', woredaId: '' })
     const [woredas, setWoredas] = useState([])
     const [submitting, setSubmitting] = useState(false)
-    const [msg, setMsg] = useState({ type: '', text: '' })
 
     const load = async () => {
         setLoading(true)
@@ -130,14 +150,13 @@ function UsersTab({ isMobile }) {
     const submit = async (e) => {
         e.preventDefault()
         setSubmitting(true)
-        setMsg({ type: '', text: '' })
         try {
             await api.post('/auth/register', form)
-            setMsg({ type: 'success', text: 'Fayyadamaan dabalameera!' })
+            toast.success('Fayyadamaan dabalameera!')
             setForm({ name: '', email: '', password: '', role: 'ticketer', woredaId: '' })
             load()
         } catch (err) {
-            setMsg({ type: 'error', text: err.response?.data?.error || 'Hin danda\'amne' })
+            toast.error(err.response?.data?.error || 'Hin danda\'amne')
         } finally { setSubmitting(false) }
     }
 
@@ -153,11 +172,6 @@ function UsersTab({ isMobile }) {
             <div className="card">
                 <div className="card-header"><span className="card-title">➕ Fayyadamaa Dabali</span></div>
                 <div className="card-body">
-                    {msg.text && (
-                        <div style={{ background: msg.type === 'success' ? '#f0fdf4' : '#fef2f2', color: msg.type === 'success' ? '#16a34a' : '#dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>
-                            {msg.type === 'success' ? '✅' : '⚠️'} {msg.text}
-                        </div>
-                    )}
                     <form onSubmit={submit}>
                         <div className="form-group">
                             <label className="form-label">Maqaa Guutuu *</label>

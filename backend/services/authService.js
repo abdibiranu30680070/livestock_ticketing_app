@@ -35,10 +35,14 @@ const register = async (userData) => {
         throw { status: 400, message: 'Name, email, and password required' };
     }
 
+    const parsedZoneId = zoneId ? parseInt(zoneId) : null;
+    const parsedCityId = cityId ? parseInt(cityId) : null;
+    const parsedWoredaId = woredaId ? parseInt(woredaId) : null;
+
     const hashed = await bcrypt.hash(password, 10);
     try {
         const user = await prisma.user.create({
-            data: { name, email, password: hashed, role: role || 'ticketer', zoneId, cityId, woredaId }
+            data: { name, email, password: hashed, role: role || 'ticketer', zoneId: parsedZoneId, cityId: parsedCityId, woredaId: parsedWoredaId }
         });
         return { id: user.id, name: user.name, email: user.email, role: user.role };
     } catch (err) {
