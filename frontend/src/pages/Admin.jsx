@@ -228,7 +228,9 @@ export default function Admin() {
             </div>
 
             <div style={{ background: 'white', borderRadius: 10, padding: 6, display: 'inline-flex', gap: 4, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', marginBottom: 24 }}>
-                <button style={tabBtnStyle('animals')} onClick={() => setTab('animals')}>🐄 Animal Types</button>
+                <button style={tabBtnStyle('animals')} onClick={() => setTab('animals')}>
+                    <OdaaIcon style={{ marginRight: 6, verticalAlign: 'middle' }} /> Animal Types
+                </button>
                 <button style={tabBtnStyle('users')} onClick={() => setTab('users')}>👥 Users</button>
             </div>
 

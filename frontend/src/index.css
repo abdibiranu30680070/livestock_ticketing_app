@@ -56,17 +56,22 @@ body {
   color: var(--charcoal);
   line-height: 1.6;
   min-height: 100vh;
+  margin: 0;
+  height: 100%;
 }
 
 #root {
+  height: 100%;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
 }
 
 /* ===================== LAYOUT ===================== */
 .app-layout {
   display: flex;
   min-height: 100vh;
+  height: 100%;
   width: 100%;
 }
 
@@ -883,6 +888,8 @@ tbody td {
 
   .main-content {
     margin-left: 0;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .page-body {
@@ -925,6 +932,12 @@ tbody td {
 
   .hamburger {
     display: flex;
+    z-index: 210;
+  }
+
+  /* Fix for potential white screen/overflow */
+  .app-layout {
+    overflow-x: hidden;
   }
 }
 
@@ -972,12 +985,16 @@ tbody td {
 }
 
 .hamburger span {
-  width: 22px;
+  width: 20px;
   height: 2px;
   background: var(--charcoal);
   border-radius: 2px;
   display: block;
   transition: var(--transition);
+}
+
+.hamburger:hover span {
+  background: var(--crimson);
 }
 
 .overlay {
