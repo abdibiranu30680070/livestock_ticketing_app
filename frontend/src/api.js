@@ -1,6 +1,12 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || '/api'
+let baseURL = import.meta.env.VITE_API_URL || '/api'
+
+// Auto-fix: Ensure remote URLs end with /api
+if (baseURL.startsWith('http') && !baseURL.endsWith('/api')) {
+    baseURL = baseURL.replace(/\/$/, '') + '/api'
+}
+
 console.log('API Base URL:', baseURL)
 const api = axios.create({ baseURL })
 
