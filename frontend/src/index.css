@@ -833,6 +833,42 @@ tbody td {
   font-weight: bold;
 }
 
+/* ===================== COMPONENTS ===================== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px;
+}
+
+.hamburger span {
+  width: 20px;
+  height: 2px;
+  background: var(--charcoal);
+  border-radius: 2px;
+  display: block;
+  transition: var(--transition);
+}
+
+.hamburger:hover span {
+  background: var(--crimson);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 150;
+}
+
+.overlay.visible {
+  display: block;
+}
+
 /* ===================== RESPONSIVE ===================== */
 /* 2xl & xl screens handled mostly by max-width: 1536px on .page-body */
 
@@ -974,40 +1010,6 @@ tbody td {
   }
 }
 
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 6px;
-}
-
-.hamburger span {
-  width: 20px;
-  height: 2px;
-  background: var(--charcoal);
-  border-radius: 2px;
-  display: block;
-  transition: var(--transition);
-}
-
-.hamburger:hover span {
-  background: var(--crimson);
-}
-
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 150;
-}
-
-.overlay.visible {
-  display: block;
-}
 
 /* ===================== RANKINGS ===================== */
 .rank-badge {
