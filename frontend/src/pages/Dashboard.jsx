@@ -12,6 +12,7 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { Bar, Line, Pie } from 'react-chartjs-2'
 import api from '../api.js'
+import OdaaIcon from '../components/OdaaIcon.jsx'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Tooltip, Legend, Filler)
 
@@ -78,7 +79,10 @@ export default function Dashboard() {
             {/* Header */}
             <div className="dash-header" style={{ marginBottom: 24 }}>
                 <div className="dash-header-text">
-                    <h1>🐄 Livestock TAX Collection Dashboard</h1>
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <OdaaIcon style={{ width: '32px', height: '32px', color: 'var(--forest-light)' }} />
+                        Livestock TAX Collection Dashboard
+                    </h1>
                     <p>Official Real-time Monitoring Interface · Arsi Liixa Zone</p>
                 </div>
                 <button className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)' }} onClick={() => loadStats()}>

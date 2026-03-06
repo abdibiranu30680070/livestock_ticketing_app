@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import api from '../api.js'
 import { useAuth } from '../context/AuthContext.jsx'
+import OdaaIcon from '../components/OdaaIcon.jsx'
 
 const fmt = n => Number(n || 0).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
@@ -9,7 +10,10 @@ function Receipt({ ticket }) {
     return (
         <div className="receipt">
             <div className="receipt-header">
-                <div style={{ fontWeight: 700, fontSize: 14 }}>🐄 ARSI LIIXA ZONE</div>
+                <div style={{ fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <OdaaIcon style={{ width: '16px', height: '16px' }} />
+                    ARSI LIIXA ZONE
+                </div>
                 <div>Livestock Market Tax Receipt</div>
                 <div style={{ fontSize: 10, marginTop: 4 }}>{new Date().toLocaleString()}</div>
             </div>

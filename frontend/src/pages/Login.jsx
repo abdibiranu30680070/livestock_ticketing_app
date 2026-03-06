@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
+import OdaaIcon from '../components/OdaaIcon.jsx'
+
 export default function Login() {
     const { login } = useAuth()
     const navigate = useNavigate()
@@ -28,7 +30,20 @@ export default function Login() {
         <div className="auth-page">
             <div className="auth-card">
                 <div className="auth-header">
-                    <div style={{ fontSize: 48, marginBottom: 12 }}>🐄</div>
+                    <div style={{
+                        fontSize: 64,
+                        marginBottom: 16,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 90,
+                        height: 90,
+                        background: 'var(--snow)',
+                        borderRadius: '50%',
+                        color: 'var(--forest)'
+                    }}>
+                        <OdaaIcon />
+                    </div>
                     <h1>Livestock Ticketing</h1>
                     <p>Arsi Liixa Zone – Official Tax Collection System</p>
                 </div>

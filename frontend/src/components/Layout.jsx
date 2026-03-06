@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import OdaaIcon from './OdaaIcon.jsx'
 
 const navItems = [
     { to: '/', icon: '📊', label: 'Dashboard', exact: true, roles: [] },
@@ -29,7 +30,9 @@ export default function Layout() {
             <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-brand">
                     <div className="sidebar-logo">
-                        <div className="sidebar-logo-icon">🐄</div>
+                        <div className="sidebar-logo-icon">
+                            <OdaaIcon style={{ width: 24, height: 24 }} />
+                        </div>
                         <div className="sidebar-logo-text">
                             <div className="title">Livestock Tax</div>
                             <div className="subtitle">Arsi Liixa Zone</div>
