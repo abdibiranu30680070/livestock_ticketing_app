@@ -12,21 +12,21 @@ function Receipt({ ticket }) {
             <div className="receipt-header">
                 <div style={{ fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <OdaaIcon style={{ width: '16px', height: '16px' }} />
-                    ARSI LIIXA ZONE
+                    GODINA ARSI LIIXA
                 </div>
-                <div>Livestock Market Tax Receipt</div>
+                <div>Nagahee Gibira Gabaa Beeyladaa</div>
                 <div style={{ fontSize: 10, marginTop: 4 }}>{new Date().toLocaleString()}</div>
             </div>
-            <div className="receipt-row"><span>Ref #:</span><span>{ticket.reference}</span></div>
-            <div className="receipt-row"><span>Type:</span><span>{ticket.animalType?.name}</span></div>
-            <div className="receipt-row"><span>Quantity:</span><span>{ticket.quantity} Head</span></div>
-            <div className="receipt-row"><span>Unit Rate:</span><span>{fmtNum(ticket.animalType?.taxAmount)} ETB</span></div>
-            {ticket.customerName && <div className="receipt-row"><span>Customer:</span><span>{ticket.customerName}</span></div>}
-            <div className="receipt-row"><span>Collector:</span><span>{ticket.taxTaker?.name}</span></div>
+            <div className="receipt-row"><span>Lakk. Nagahee:</span><span>{ticket.reference}</span></div>
+            <div className="receipt-row"><span>Gosa:</span><span>{ticket.animalType?.name}</span></div>
+            <div className="receipt-row"><span>Baay'ina:</span><span>{ticket.quantity} Ol</span></div>
+            <div className="receipt-row"><span>Gatii Tokkoo:</span><span>{fmtNum(ticket.animalType?.taxAmount)} ETB</span></div>
+            {ticket.customerName && <div className="receipt-row"><span>Maqaa Maamilaa:</span><span>{ticket.customerName}</span></div>}
+            <div className="receipt-row"><span>Sassaabaa:</span><span>{ticket.taxTaker?.name}</span></div>
             <div className="receipt-total">
-                <div className="receipt-row"><span>TOTAL TAX</span><span>{fmtNum(ticket.taxAmount)} ETB</span></div>
+                <div className="receipt-row"><span>GIBIRA WALIIGALAA</span><span>{fmtNum(ticket.taxAmount)} ETB</span></div>
             </div>
-            <div style={{ textAlign: 'center', fontSize: 10, marginTop: 8 }}>Thank you · Ameseginalehu</div>
+            <div style={{ textAlign: 'center', fontSize: 10, marginTop: 8 }}>Galatoomaa · Horaa Bulaa</div>
         </div>
     )
 }
@@ -99,8 +99,8 @@ export default function NewTicket() {
             )}
 
             <div style={{ marginBottom: 20 }}>
-                <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{createdTicket ? '✅ Ticket Issued!' : '🎫 New Ticket'}</h2>
-                <p style={{ color: '#6b7280', fontSize: 13 }}>{createdTicket ? 'The ticket has been recorded successfully.' : 'Issue a new livestock sale tax ticket'}</p>
+                <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{createdTicket ? '✅ Nagahee Qophaa\'e!' : '🎫 Nagahee Haaraa'}</h2>
+                <p style={{ color: '#6b7280', fontSize: 13 }}>{createdTicket ? 'Nagaheen kun sirriitti galmaa\'eera.' : 'Gibira gabaa beeyladaatiif nagahee haaraa qopheessi'}</p>
             </div>
 
             <div className="card" style={{ border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
@@ -110,7 +110,7 @@ export default function NewTicket() {
                     {!createdTicket ? (
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label className="form-label">Animal Type *</label>
+                                <label className="form-label">Gosa Beeyladaa *</label>
                                 <select
                                     className="form-select"
                                     style={{ height: 48, fontSize: 16 }}
@@ -118,15 +118,15 @@ export default function NewTicket() {
                                     onChange={e => setForm({ ...form, animalTypeId: e.target.value })}
                                     required
                                 >
-                                    <option value="">Select animal type...</option>
+                                    <option value="">Gosa beeyladaa filadhu...</option>
                                     {animalTypes.map(t => (
-                                        <option key={t.id} value={t.id}>{t.name} — {fmt(t.taxAmount)} ETB/head</option>
+                                        <option key={t.id} value={t.id}>{t.name} — {fmt(t.taxAmount)} ETB/ol</option>
                                     ))}
                                 </select>
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Quantity (Head) *</label>
+                                <label className="form-label">Baay'ina (Ol) *</label>
                                 <input
                                     type="number"
                                     className="form-control"
@@ -140,12 +140,12 @@ export default function NewTicket() {
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Customer Name (Optional)</label>
+                                <label className="form-label">Maqaa Maamilaa (Waliif-malaa)</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     style={{ height: 48, fontSize: 16 }}
-                                    placeholder="Enter customer name..."
+                                    placeholder="Maqaa maamilaa galchi..."
                                     value={form.customerName}
                                     onChange={e => setForm({ ...form, customerName: e.target.value })}
                                 />
@@ -160,12 +160,12 @@ export default function NewTicket() {
                                     padding: '20px 24px',
                                     marginBottom: 24,
                                 }}>
-                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#f87171', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Tax Calculation Preview</div>
+                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#f87171', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Dura-bu'aa Herrega Gibiraa</div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 14 }}>
-                                        <span>Type:</span><strong>{preview.type.name}</strong>
+                                        <span>Gosa:</span><strong>{preview.type.name}</strong>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 14 }}>
-                                        <span>Quantity:</span><strong>{form.quantity} Head</strong>
+                                        <span>Baay'ina:</span><strong>{form.quantity} Ol</strong>
                                     </div>
                                     <div style={{
                                         borderTop: '1px dashed #fca5a5',
@@ -173,7 +173,7 @@ export default function NewTicket() {
                                         display: 'flex', justifyContent: 'space-between',
                                         fontSize: 24, fontWeight: 900, color: '#dc2626'
                                     }}>
-                                        <span>TOTAL:</span>
+                                        <span>WALIIGALA:</span>
                                         <span>{fmt(preview.total)} ETB</span>
                                     </div>
                                 </div>
@@ -181,10 +181,10 @@ export default function NewTicket() {
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                                 <button type="submit" className="btn btn-primary btn-lg" style={{ flex: '1 1 200px' }} disabled={loading}>
-                                    {loading ? '⏳ Creating...' : '🎫 Issue Ticket'}
+                                    {loading ? '⏳ Qophaa\'aa jira...' : '🎫 Nagahee Qopheessi'}
                                 </button>
                                 <button type="button" className="btn btn-outline btn-lg" style={{ flex: '1 1 120px' }} onClick={() => navigate('/tickets')}>
-                                    Cancel
+                                    Dhiisi
                                 </button>
                             </div>
                         </form>
@@ -192,19 +192,19 @@ export default function NewTicket() {
                         <div style={{ textAlign: 'center', padding: '10px 0' }}>
                             <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
                             <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>{createdTicket.reference}</h3>
-                            <p style={{ color: '#6b7280', marginBottom: 24 }}>Total Tax: <strong style={{ color: '#dc2626', fontSize: 22 }}>{fmt(createdTicket.taxAmount)} <span style={{ fontSize: 14 }}>ETB</span></strong></p>
+                            <p style={{ color: '#6b7280', marginBottom: 24 }}>Gibira Waliigalaa: <strong style={{ color: '#dc2626', fontSize: 22 }}>{fmt(createdTicket.taxAmount)} <span style={{ fontSize: 14 }}>ETB</span></strong></p>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                                 <button onClick={confirmAndPrint} className="btn btn-success btn-lg" style={{ width: '100%', fontSize: 18 }} disabled={loading}>
-                                    {loading ? '⏳ Processing...' : '🖨️ Print & Confirm'}
+                                    {loading ? '⏳ Hojjetamaa jira...' : '🖨️ Maxxansi & Mirkaneessi'}
                                 </button>
                                 <button onClick={() => navigate('/tickets')} className="btn btn-outline btn-lg" style={{ width: '100%' }}>
-                                    Done
+                                    Xumuri
                                 </button>
                             </div>
 
                             <p style={{ marginTop: 24, fontSize: 11, color: '#9ca3af' }}>
-                                ⚠️ Ref #: {createdTicket.reference} · Confirmed prints are recorded.
+                                ⚠️ Ref #: {createdTicket.reference} · Nagaheen maxxanfame galmeeffameera.
                             </p>
                         </div>
                     )}

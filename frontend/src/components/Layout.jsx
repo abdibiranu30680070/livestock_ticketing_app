@@ -4,11 +4,11 @@ import { useAuth } from '../context/AuthContext.jsx'
 import OdaaIcon from './OdaaIcon.jsx'
 
 const navItems = [
-    { to: '/', icon: '📊', label: 'Dashboard', exact: true, roles: [] },
-    { to: '/tickets', icon: '🎫', label: 'Tickets', roles: [] },
-    { to: '/tickets/new', icon: '➕', label: 'New Ticket', roles: ['ticketer', 'woreda', 'admin'] },
-    { to: '/collections', icon: '💰', label: 'Collections', roles: ['woreda', 'zone', 'admin'] },
-    { to: '/admin', icon: '⚙️', label: 'Administration', roles: ['zone', 'admin'] },
+    { to: '/', icon: '📊', label: 'Gabaasa Waliigalaa', exact: true, roles: [] },
+    { to: '/tickets', icon: '🎫', label: 'Tikkeetii / Nagahee', roles: [] },
+    { to: '/tickets/new', icon: '➕', label: 'Tikkeetii Haaraa', roles: ['ticketer', 'woreda', 'admin'] },
+    { to: '/collections', icon: '💰', label: 'Sassaabbii Gibiraa', roles: ['woreda', 'zone', 'admin'] },
+    { to: '/admin', icon: '⚙️', label: 'Bulchiinsa', roles: ['zone', 'admin'] },
 ]
 
 export default function Layout() {
@@ -16,7 +16,12 @@ export default function Layout() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const location = useLocation()
 
-    const roleLabel = { ticketer: 'Ticketer', woreda: 'Woreda Admin', zone: 'Zone Admin', admin: 'System Admin' }
+    const roleLabel = {
+        ticketer: 'Sassaabaa Gibiraa',
+        woreda: 'Bulchiinsa Aanaa',
+        zone: 'Bulchiinsa Godinaa',
+        admin: 'Bulchiinsa Sirnaa'
+    }
 
     return (
         <div className="app-layout">
@@ -34,14 +39,14 @@ export default function Layout() {
                             <OdaaIcon style={{ width: 24, height: 24 }} />
                         </div>
                         <div className="sidebar-logo-text">
-                            <div className="title">Livestock Tax</div>
-                            <div className="subtitle">Arsi Liixa Zone</div>
+                            <div className="title">Gibira Loonii</div>
+                            <div className="subtitle">Godina Arsi Liixa</div>
                         </div>
                     </div>
                 </div>
 
                 <div className="sidebar-nav">
-                    <div className="nav-section-label">Main</div>
+                    <div className="nav-section-label">Hojii Ijoo</div>
                     {navItems.filter(item =>
                         item.roles.length === 0 || item.roles.includes(user?.role)
                     ).map(item => (
@@ -67,7 +72,7 @@ export default function Layout() {
                             <div className="name">{user?.name}</div>
                             <div className="role">{roleLabel[user?.role] || user?.role}</div>
                         </div>
-                        <button className="btn-logout" onClick={logout} title="Logout">⇥</button>
+                        <button className="btn-logout" onClick={logout} title="Ba'i">⇥</button>
                     </div>
                 </div>
             </nav>

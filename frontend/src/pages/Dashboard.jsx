@@ -100,42 +100,42 @@ export default function Dashboard() {
                 <div className="dash-header-text">
                     <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: isMobile ? '18px' : '24px' }}>
                         <OdaaIcon style={{ width: isMobile ? '24px' : '32px', height: isMobile ? '24px' : '32px', color: 'var(--forest-light)' }} />
-                        Livestock TAX Dashboard
+                        Gabaasa Gibira Loonii
                     </h1>
-                    <p style={{ fontSize: isMobile ? '12px' : '14px' }}>Official Real-time Monitoring · Arsi Liixa</p>
+                    <p style={{ fontSize: isMobile ? '12px' : '14px' }}>Hordoffii Yeroo Dhugaa · Godina Arsi Liixa</p>
                 </div>
                 <button className="btn btn-outline" style={{ display: isMobile ? 'none' : 'flex', color: 'white', borderColor: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)' }} onClick={() => loadStats()}>
-                    🔄 Refresh
+                    🔄 Haaromsi
                 </button>
             </div>
 
             {/* Filters */}
             <div className="filter-bar">
                 <div className="form-group">
-                    <label className="form-label">Date From</label>
+                    <label className="form-label">Guyyaa irraa</label>
                     <input type="date" className="form-control" value={filters.date_from} onChange={e => setFilters({ ...filters, date_from: e.target.value })} />
                 </div>
                 <div className="form-group">
-                    <label className="form-label">Date To</label>
+                    <label className="form-label">Guyyaa hamma</label>
                     <input type="date" className="form-control" value={filters.date_to} onChange={e => setFilters({ ...filters, date_to: e.target.value })} />
                 </div>
                 <div className="form-group">
-                    <label className="form-label">Tax Collector</label>
+                    <label className="form-label">Sassaabaa Gibiraa</label>
                     <select className="form-select" value={filters.user_id} onChange={e => setFilters({ ...filters, user_id: e.target.value })}>
-                        <option value="">All Collectors</option>
+                        <option value="">Hundumaa</option>
                         {masterData.users.filter(u => u.role === 'ticketer').map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
                     </select>
                 </div>
                 <div className="form-group">
-                    <label className="form-label">Animal Type</label>
+                    <label className="form-label">Gosa Beeyladaa</label>
                     <select className="form-select" value={filters.animal_type_id} onChange={e => setFilters({ ...filters, animal_type_id: e.target.value })}>
-                        <option value="">All Types</option>
+                        <option value="">Hundumaa</option>
                         {masterData.animalTypes.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                     </select>
                 </div>
                 <div className="filter-actions">
-                    <button className="btn btn-primary" onClick={applyFilters}>🔍 Apply</button>
-                    <button className="btn btn-outline" onClick={resetFilters}>↺ Reset</button>
+                    <button className="btn btn-primary" onClick={applyFilters}>🔍 Barbaadi</button>
+                    <button className="btn btn-outline" onClick={resetFilters}>↺ Haaromsi</button>
                 </div>
             </div>
 
@@ -148,28 +148,28 @@ export default function Dashboard() {
                 <div className="summary-card red" style={{ padding: '12px' }}>
                     <div className="summary-icon red" style={{ width: 40, height: 40, fontSize: 18 }}>🐄</div>
                     <div>
-                        <div className="summary-label" style={{ fontSize: 11 }}>Cattle Today</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Loon Har'aa</div>
                         <div className="summary-value" style={{ fontSize: 20 }}>{(stats?.summary?.cattle || 0).toLocaleString()}</div>
                     </div>
                 </div>
                 <div className="summary-card green" style={{ padding: '12px' }}>
                     <div className="summary-icon green" style={{ width: 40, height: 40, fontSize: 18 }}>💵</div>
                     <div>
-                        <div className="summary-label" style={{ fontSize: 11 }}>Tax Today</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Gibira Har'aa</div>
                         <div className="summary-value" style={{ fontSize: 20 }}>{fmt(stats?.summary?.tax)} <span className="unit">ETB</span></div>
                     </div>
                 </div>
                 <div className="summary-card dark" style={{ padding: '12px' }}>
                     <div className="summary-icon dark" style={{ width: 40, height: 40, fontSize: 18 }}>🎫</div>
                     <div>
-                        <div className="summary-label" style={{ fontSize: 11 }}>Transactions</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Baay'ina Nagahee</div>
                         <div className="summary-value" style={{ fontSize: 20 }}>{stats?.summary?.tx || 0}</div>
                     </div>
                 </div>
                 <div className="summary-card orange" style={{ padding: '12px' }}>
                     <div className="summary-icon orange" style={{ width: 40, height: 40, fontSize: 18 }}>👥</div>
                     <div>
-                        <div className="summary-label" style={{ fontSize: 11 }}>Active Staff</div>
+                        <div className="summary-label" style={{ fontSize: 11 }}>Hojjettoota</div>
                         <div className="summary-value" style={{ fontSize: 20 }}>{stats?.summary?.collectors || 0}</div>
                     </div>
                 </div>
@@ -182,7 +182,7 @@ export default function Dashboard() {
                         <div className="chart-card">
                             <div className="chart-header">
                                 <div className="chart-icon" style={{ background: 'rgba(220,38,38,0.1)', color: '#dc2626' }}>📊</div>
-                                <span className="card-title">Tax by Animal Type</span>
+                                <span className="card-title">Gibira akka Gosa Looniitti</span>
                             </div>
                             <div className="chart-canvas-wrap">
                                 {stats?.charts?.bar?.labels?.length > 0 ? (
@@ -193,7 +193,7 @@ export default function Dashboard() {
                         <div className="chart-card">
                             <div className="chart-header">
                                 <div className="chart-icon" style={{ background: 'rgba(22,163,74,0.1)', color: '#16a34a' }}>📈</div>
-                                <span className="card-title">Revenue Trend</span>
+                                <span className="card-title">Adeemsa Galii</span>
                             </div>
                             <div className="chart-canvas-wrap">
                                 {stats?.charts?.line?.labels?.length > 0 ? (
@@ -208,7 +208,7 @@ export default function Dashboard() {
                         <div className="chart-card">
                             <div className="chart-header">
                                 <div className="chart-icon" style={{ background: 'rgba(22,163,74,0.1)', color: '#16a34a' }}>🗺️</div>
-                                <span className="card-title">Woreda Performance</span>
+                                <span className="card-title">Hojii Aanaalee</span>
                             </div>
                             <div className="chart-canvas-wrap">
                                 {stats?.charts?.woreda_bar?.labels?.length > 0 ? (
@@ -219,7 +219,7 @@ export default function Dashboard() {
                         <div className="chart-card">
                             <div className="chart-header">
                                 <div className="chart-icon" style={{ background: 'rgba(31,41,55,0.08)', color: '#374151' }}>🥧</div>
-                                <span className="card-title">Market Share %</span>
+                                <span className="card-title">Qooda Gabaa %</span>
                             </div>
                             <div className="chart-canvas-wrap">
                                 {stats?.charts?.pie?.labels?.length > 0 ? (
@@ -234,19 +234,19 @@ export default function Dashboard() {
                         <div className="card-header">
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                 <div className="chart-icon" style={{ background: 'rgba(220,38,38,0.1)', color: '#dc2626' }}>🏆</div>
-                                <span className="card-title">Collector Rankings</span>
+                                <span className="card-title">Sadarkaa Sassaabdotaa</span>
                             </div>
-                            <span className="badge badge-red">Live Performance</span>
+                            <span className="badge badge-red">Hojii Ammaa</span>
                         </div>
                         <div className="table-wrap">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Collector</th>
-                                        <th style={{ textAlign: 'center' }}>Tickets</th>
-                                        <th style={{ textAlign: 'center' }}>Cattle</th>
-                                        <th style={{ textAlign: 'right' }}>Total Tax (ETB)</th>
+                                        <th>Sassaabaa</th>
+                                        <th style={{ textAlign: 'center' }}>Baay'ina Nagahee</th>
+                                        <th style={{ textAlign: 'center' }}>Baay'ina Loonii</th>
+                                        <th style={{ textAlign: 'right' }}>Gibira Waliigalaa (ETB)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -260,7 +260,7 @@ export default function Dashboard() {
                                             <td style={{ fontWeight: 600 }}>{r.name}</td>
                                             <td style={{ textAlign: 'center' }}>{r.tx}</td>
                                             <td style={{ textAlign: 'center' }}>
-                                                <span className="badge badge-green">{r.cattle} Head</span>
+                                                <span className="badge badge-green">{r.cattle} Ol</span>
                                             </td>
                                             <td style={{ textAlign: 'right', fontWeight: 700, color: '#dc2626' }}>{fmt(r.tax)}</td>
                                         </tr>
@@ -275,8 +275,8 @@ export default function Dashboard() {
                         <div className="card-header">
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                 <div className="chart-icon" style={{ background: 'rgba(22,163,74,0.1)', color: '#16a34a' }}>⚡</div>
-                                <span className="card-title">Live Transaction Stream</span>
-                                <span className="badge badge-green">{stats.total_count} Total</span>
+                                <span className="card-title">Adeemsa Nagahee Ammaa</span>
+                                <span className="badge badge-green">Waliigala {stats.total_count}</span>
                             </div>
                             <div style={{ display: 'flex', gap: 8 }}>
                                 <button className="btn btn-outline btn-sm" onClick={() => onPage(-1)} disabled={filters.offset === 0}>← Prev</button>
@@ -290,14 +290,14 @@ export default function Dashboard() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Ref</th>
-                                        <th>Date</th>
-                                        <th>Type</th>
-                                        <th style={{ textAlign: 'center' }}>Qty</th>
-                                        <th style={{ textAlign: 'right' }}>Unit</th>
-                                        <th style={{ textAlign: 'right' }}>Total</th>
-                                        <th>Collector</th>
-                                        <th>Status</th>
+                                        <th>Lakk. Nagahee</th>
+                                        <th>Guyyaa</th>
+                                        <th>Gosa Beeyladaa</th>
+                                        <th style={{ textAlign: 'center' }}>Baay'ina</th>
+                                        <th style={{ textAlign: 'right' }}>Gatii</th>
+                                        <th style={{ textAlign: 'right' }}>Waliigala</th>
+                                        <th>Sassaabaa</th>
+                                        <th>Haala Nagahee</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -323,7 +323,7 @@ export default function Dashboard() {
             )}
 
             {loading && (
-                <div className="loading-wrap"><div className="spinner" /><p>Loading dashboard...</p></div>
+                <div className="loading-wrap"><div className="spinner" /><p>Gabaasa buusaara jira...</p></div>
             )}
         </div>
     )

@@ -36,40 +36,40 @@ export default function Collections() {
         try {
             await api.post('/collections', form)
             setForm({ ticketerId: '', amount: '' })
-            setSuccess('Collection recorded successfully!')
+            setSuccess('Sassaabbii gibiraa sirriitti galmaa\'eera!')
             loadData()
         } catch (err) {
-            setError(err.response?.data?.error || 'Failed to record collection')
+            setError(err.response?.data?.error || 'Sassaabbii galmeessuun hin danda\'amne')
         } finally { setFormLoading(false) }
     }
 
     return (
         <div>
             <div style={{ marginBottom: 24 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>Cash Collections</h2>
-                <p style={{ color: '#6b7280', fontSize: 14 }}>Record tax cash handovers from ticketers</p>
+                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>Sassaabbii Gibiraa (Maallaqa)</h2>
+                <p style={{ color: '#6b7280', fontSize: 14 }}>Maallaqa sassaabaa gibiraa irraa qabame galmeessi</p>
             </div>
 
             {/* Record new collection */}
             <div className="card" style={{ marginBottom: 24, maxWidth: 520 }}>
-                <div className="card-header"><span className="card-title">💰 Record Collection</span></div>
+                <div className="card-header"><span className="card-title">💰 Sassaabbii Galmeessi</span></div>
                 <div className="card-body">
                     {error && <div style={{ background: '#fef2f2', color: '#dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>⚠️ {error}</div>}
                     {success && <div style={{ background: '#f0fdf4', color: '#16a34a', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 14 }}>✅ {success}</div>}
                     <form onSubmit={handleRecord}>
                         <div className="form-group">
-                            <label className="form-label">Ticketer *</label>
+                            <label className="form-label">Sassaabaa Gibiraa *</label>
                             <select className="form-select" value={form.ticketerId} onChange={e => setForm({ ...form, ticketerId: e.target.value })} required>
-                                <option value="">Select ticketer...</option>
+                                <option value="">Sassaabaa filadhu...</option>
                                 {ticketers.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                             </select>
                         </div>
                         <div className="form-group">
-                            <label className="form-label">Amount Collected (ETB) *</label>
+                            <label className="form-label">Maallaqa Sassaabame (ETB) *</label>
                             <input type="number" className="form-control" placeholder="0.00" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} min="0.01" step="0.01" required />
                         </div>
                         <button type="submit" className="btn btn-primary" disabled={formLoading}>
-                            {formLoading ? '⏳ Recording...' : '✓ Record Collection'}
+                            {formLoading ? '⏳ Galmeessaa jira...' : '✓ Sassaabbii Galmeessi'}
                         </button>
                     </form>
                 </div>
@@ -81,22 +81,22 @@ export default function Collections() {
             ) : (
                 <div className="card">
                     <div className="card-header">
-                        <span className="card-title">Collection History <span className="badge badge-gray">{total}</span></span>
+                        <span className="card-title">Seenaa Sassaabbii <span className="badge badge-gray">{total}</span></span>
                     </div>
                     <div className="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Reference</th>
-                                    <th>Date</th>
-                                    <th>Ticketer</th>
-                                    <th>Woreda</th>
-                                    <th style={{ textAlign: 'right' }}>Amount (ETB)</th>
+                                    <th>Lakk. Nagahee</th>
+                                    <th>Guyyaa</th>
+                                    <th>Sassaabaa</th>
+                                    <th>Aanaa</th>
+                                    <th style={{ textAlign: 'right' }}>Maallaqa (ETB)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {collections.length === 0 ? (
-                                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>No collections yet</td></tr>
+                                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>Sassaabbii gibiraa hin argamne</td></tr>
                                 ) : collections.map(c => (
                                     <tr key={c.id}>
                                         <td style={{ fontWeight: 700 }}>{c.reference}</td>
