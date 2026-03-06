@@ -162,7 +162,7 @@ export default function Dashboard() {
                                 <span className="card-title">Tax by Animal Type</span>
                             </div>
                             <div className="chart-canvas-wrap">
-                                {stats.charts.bar?.labels?.length > 0 ? (
+                                {stats?.charts?.bar?.labels?.length > 0 ? (
                                     <Bar data={stats.charts.bar} options={chartOptions} />
                                 ) : <div className="empty-state"><div className="empty-icon">📊</div><p>No data</p></div>}
                             </div>
@@ -173,7 +173,7 @@ export default function Dashboard() {
                                 <span className="card-title">Revenue Trend</span>
                             </div>
                             <div className="chart-canvas-wrap">
-                                {stats.charts.line?.labels?.length > 0 ? (
+                                {stats?.charts?.line?.labels?.length > 0 ? (
                                     <Line data={stats.charts.line} options={{ ...chartOptions, plugins: { ...chartOptions.plugins }, scales: { y: { beginAtZero: true } } }} />
                                 ) : <div className="empty-state"><div className="empty-icon">📈</div><p>No data</p></div>}
                             </div>
@@ -188,7 +188,7 @@ export default function Dashboard() {
                                 <span className="card-title">Woreda Performance</span>
                             </div>
                             <div className="chart-canvas-wrap">
-                                {stats.charts.woreda_bar?.labels?.length > 0 ? (
+                                {stats?.charts?.woreda_bar?.labels?.length > 0 ? (
                                     <Bar data={stats.charts.woreda_bar} options={{ ...chartOptions, indexAxis: 'y' }} />
                                 ) : <div className="empty-state"><div className="empty-icon">🗺️</div><p>No data</p></div>}
                             </div>
@@ -199,7 +199,7 @@ export default function Dashboard() {
                                 <span className="card-title">Market Share %</span>
                             </div>
                             <div className="chart-canvas-wrap">
-                                {stats.charts.pie?.labels?.length > 0 ? (
+                                {stats?.charts?.pie?.labels?.length > 0 ? (
                                     <Pie data={stats.charts.pie} options={pieOptions} />
                                 ) : <div className="empty-state"><div className="empty-icon">🥧</div><p>No data</p></div>}
                             </div>
@@ -227,10 +227,10 @@ export default function Dashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {stats.rankings.length === 0 ? (
+                                    {!stats?.rankings || stats.rankings.length === 0 ? (
                                         <tr><td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>No data</td></tr>
                                     ) : stats.rankings.map((r, i) => (
-                                        <tr key={r.name}>
+                                        <tr key={r.name || i}>
                                             <td>
                                                 <span className={`rank-badge rank-${i < 3 ? i + 1 : 'n'}`}>{i + 1}</span>
                                             </td>
@@ -278,10 +278,10 @@ export default function Dashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {stats.recent.length === 0 ? (
+                                    {!stats?.recent || stats.recent.length === 0 ? (
                                         <tr><td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>No transactions</td></tr>
-                                    ) : stats.recent.map(t => (
-                                        <tr key={t.ref}>
+                                    ) : stats.recent.map((t, idx) => (
+                                        <tr key={t.ref || idx}>
                                             <td style={{ fontWeight: 600 }}>{t.ref}</td>
                                             <td style={{ color: '#6b7280', fontSize: 13 }}>{t.date}</td>
                                             <td><span className="badge badge-red">{t.type}</span></td>
