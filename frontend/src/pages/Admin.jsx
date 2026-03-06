@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import api from '../api.js'
+import OdaaIcon from '../components/OdaaIcon.jsx'
 
 const fmt = n => Number(n || 0).toLocaleString('en', { minimumFractionDigits: 2 })
 
