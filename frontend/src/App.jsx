@@ -9,7 +9,7 @@ import Dashboard from './pages/Dashboard.jsx'
 import Login from './pages/Login.jsx'
 import ImprovedSimpleNewTicket from './pages/ImprovedSimpleNewTicket.jsx'
 import ImprovedTickets from './pages/ImprovedTickets.jsx'
-import ProfessionalWoredaReports from './pages/ProfessionalWoredaReports.jsx'
+// import ProfessionalWoredaReports from './pages/ProfessionalWoredaReports.jsx'
 
 function ProtectedRoute({ children, roles }) {
     const { user } = useAuth()
